@@ -8,7 +8,7 @@ import java.util.List;
 public interface TopicService {
     List<Topic> getAllTopics();
 
-    List<Message> getMessageInTopicById(int id);
+    List<Message> getMessagesInTopicById(int id);
 
     void addTopic(Topic topic);
 

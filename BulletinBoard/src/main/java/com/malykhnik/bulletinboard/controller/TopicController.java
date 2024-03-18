@@ -20,18 +20,18 @@ public class TopicController {
         return topicService.getAllTopics();
     }
 
-    @GetMapping("/getMessageInTopic/{id}")
+    @GetMapping("/getMessagesInTopic/{id}")
     public List<Message> getMessageInTopicById(@PathVariable int id) {
-        return topicService.getMessageInTopicById(id);
+        return topicService.getMessagesInTopicById(id);
     }
 
     @PostMapping("/createTopic")
-    public void createTopic(@RequestBody @Valid Topic topic) {
+    public void createTopic(@Valid @RequestBody Topic topic) {
         topicService.addTopic(topic);
     }
 
     @PostMapping("/createMessageInTopic/{id}")
-    public void createMessage(@RequestBody @Valid Message message,
+    public void createMessage(@Valid @RequestBody Message message,
                                       @PathVariable int id) {
         topicService.addMessage(message, id);
     }

@@ -9,18 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-@Data
 @Repository
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class InMemoryTopicDB {
+    @Setter
     private List<Topic> topics = new ArrayList<>();
 
     public List<Topic> getAllTopics() {
         return topics;
     }
 
-    public List<Message> getMessageInTopicById(int id) {
+    public List<Message> getMessagesInTopicById(int id) {
         return topics.get(this.findIdOfTopic(id)).getMessages();
     }
 

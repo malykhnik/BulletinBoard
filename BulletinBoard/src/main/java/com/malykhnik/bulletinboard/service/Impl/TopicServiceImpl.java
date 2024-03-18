@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 @AllArgsConstructor
@@ -19,12 +20,15 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<Message> getMessageInTopicById(int id) {
-        return topicRepo.getMessageInTopicById(id);
+    public List<Message> getMessagesInTopicById(int id) {
+        return topicRepo.getMessagesInTopicById(id);
     }
 
     @Override
     public void addTopic(Topic topic) {
+        topic.setId(topicRepo.getAllTopics().size() + 1);
+        IntStream.range(0, topic.getMessages().size())
+                .forEach(i -> topic.getMessages().get(i).setId(i+1));
         topicRepo.addTopic(topic);
     }
 
