@@ -26,14 +26,14 @@ public class TopicController {
     }
 
     @PostMapping("/createTopic")
-    public Topic createTopic(@RequestBody @Valid Topic topic) {
-        return topicService.addTopic(topic);
+    public void createTopic(@RequestBody @Valid Topic topic) {
+        topicService.addTopic(topic);
     }
 
     @PostMapping("/createMessageInTopic/{id}")
-    public Message createMessage(@RequestBody @Valid Message message,
+    public void createMessage(@RequestBody @Valid Message message,
                                       @PathVariable int id) {
-        return topicService.addMessage(message, id);
+        topicService.addMessage(message, id);
     }
 
     @PutMapping("/updateMessage/{topicId}/{mesId}")
