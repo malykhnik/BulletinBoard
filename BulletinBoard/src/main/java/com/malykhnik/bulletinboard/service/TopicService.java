@@ -1,5 +1,6 @@
 package com.malykhnik.bulletinboard.service;
 
+import com.malykhnik.bulletinboard.dto.MessageDto;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
 
@@ -14,7 +15,7 @@ public interface TopicService {
 
     void addMessage(Message message, int id);
 
-    Message updateMessage(Message message, int topicId, int mesId);
+    Message updateMessage(MessageDto messageDto, int topicId, int mesId);
 
     void deleteMessage(int topicId, int mesId);
 }

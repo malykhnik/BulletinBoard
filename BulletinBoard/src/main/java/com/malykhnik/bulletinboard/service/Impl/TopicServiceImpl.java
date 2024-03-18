@@ -1,5 +1,6 @@
 package com.malykhnik.bulletinboard.service.Impl;
 
+import com.malykhnik.bulletinboard.dto.MessageDto;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
 import com.malykhnik.bulletinboard.repository.InMemoryTopicDB;
@@ -14,6 +15,7 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 public class TopicServiceImpl implements TopicService {
     private final InMemoryTopicDB topicRepo;
+
     @Override
     public List<Topic> getAllTopics() {
         return topicRepo.getAllTopics();
@@ -28,18 +30,19 @@ public class TopicServiceImpl implements TopicService {
     public void addTopic(Topic topic) {
         topic.setId(topicRepo.getAllTopics().size() + 1);
         IntStream.range(0, topic.getMessages().size())
-                .forEach(i -> topic.getMessages().get(i).setId(i+1));
+                .forEach(i -> topic.getMessages().get(i).setId(i + 1));
         topicRepo.addTopic(topic);
     }
 
     @Override
     public void addMessage(Message message, int id) {
+        message.setId(topicRepo.getMessagesInTopicById(id).size() + 1);
         topicRepo.addMessage(message, id);
     }
 
     @Override
-    public Message updateMessage(Message message, int topicId, int mesId) {
-        return topicRepo.updateMessage(message, topicId, mesId);
+    public Message updateMessage(MessageDto messageDto, int topicId, int mesId) {
+        return topicRepo.updateMessage(messageDto, topicId, mesId);
     }
 
     @Override

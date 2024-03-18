@@ -23,7 +23,7 @@ public class Message {
     private String message;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "У сообщения должна быть дата создания!")
-    private Date date;
+    private final Date date;
 
     public Message(int id, String author, String message, Date date) {
         this.author = author;

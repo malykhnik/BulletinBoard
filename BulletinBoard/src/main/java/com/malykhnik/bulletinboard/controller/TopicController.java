@@ -1,5 +1,6 @@
 package com.malykhnik.bulletinboard.controller;
 
+import com.malykhnik.bulletinboard.dto.MessageDto;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
 import com.malykhnik.bulletinboard.service.TopicService;
@@ -37,10 +38,10 @@ public class TopicController {
     }
 
     @PutMapping("/updateMessage/{topicId}/{mesId}")
-    public Message updateMessage(@RequestBody Message message,
+    public Message updateMessage(@Valid @RequestBody MessageDto messageDto,
                                 @PathVariable int topicId,
                                  @PathVariable int mesId) {
-        return topicService.updateMessage(message, topicId, mesId);
+        return topicService.updateMessage(messageDto, topicId, mesId);
     }
 
     @DeleteMapping("/deleteMessage/{topicId}/{mesId}")
