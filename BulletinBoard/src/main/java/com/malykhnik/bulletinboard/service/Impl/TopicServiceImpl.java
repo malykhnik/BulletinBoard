@@ -6,6 +6,7 @@ import com.malykhnik.bulletinboard.entity.Topic;
 import com.malykhnik.bulletinboard.repository.InMemoryTopicDB;
 import com.malykhnik.bulletinboard.service.TopicService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +32,16 @@ public class TopicServiceImpl implements TopicService {
         topic.setId(topicRepo.getAllTopics().size() + 1);
         IntStream.range(0, topic.getMessages().size())
                 .forEach(i -> topic.getMessages().get(i).setId(i + 1));
+        topic.getMessages()
+                .forEach(message -> message
+                        .setAuthor(SecurityContextHolder.getContext().getAuthentication().getName()));
         topicRepo.addTopic(topic);
     }
 
     @Override
     public void addMessage(Message message, int id) {
         message.setId(topicRepo.getMessagesInTopicById(id).size() + 1);
+        message.setAuthor(SecurityContextHolder.getContext().getAuthentication().getName());
         topicRepo.addMessage(message, id);
     }
 

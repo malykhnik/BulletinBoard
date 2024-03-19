@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: BulletinBoard
+  token:
+    signing:
+      key: 10704f7e9616445f9c5ebd05e53adac9qgagasgaasdf
