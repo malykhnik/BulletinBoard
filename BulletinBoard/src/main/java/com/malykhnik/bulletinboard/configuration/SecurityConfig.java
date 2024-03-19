@@ -26,11 +26,13 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
 
+
+    //НАСТРОИТЬ РОЛИ!!!!!!!!!!!!!!!!!!!!!!!! АДМИН НЕ РАБОТАЕТ!!!!!!!!!!!!!
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/bulletinBoard/admin/**").authenticated()
+                        .requestMatchers("/api/bulletinBoard/deleteTopic/").hasRole("admin")
                         .anyRequest().permitAll())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

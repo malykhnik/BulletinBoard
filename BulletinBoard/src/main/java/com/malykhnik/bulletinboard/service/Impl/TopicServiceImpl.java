@@ -6,10 +6,14 @@ import com.malykhnik.bulletinboard.entity.Topic;
 import com.malykhnik.bulletinboard.repository.InMemoryTopicDB;
 import com.malykhnik.bulletinboard.service.TopicService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 @Service
@@ -47,11 +51,52 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Message updateMessage(MessageDto messageDto, int topicId, int mesId) {
-        return topicRepo.updateMessage(messageDto, topicId, mesId);
+        if (hasAdminRole()) {
+            return topicRepo.updateMessage(messageDto, topicId, mesId);
+        }
+        String messageAuthor = topicRepo.
+                getMessagesInTopicById(topicId).
+                get(topicRepo.findIdOfMessage(topicId,mesId))
+                .getAuthor();
+        if (messageAuthor.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+            return topicRepo.updateMessage(messageDto, topicId, mesId);
+        }
+        throw new UsernameNotFoundException("Пользователь с username = " +
+                SecurityContextHolder.getContext().getAuthentication().getName() +
+                " не имеет доступа к редактированию данного message!");
     }
 
     @Override
     public void deleteMessage(int topicId, int mesId) {
-        topicRepo.deleteMessage(topicId, mesId);
+        if (hasAdminRole()) {
+            topicRepo.deleteMessage(topicId, mesId);
+        }
+        String messageAuthor = topicRepo.
+                getMessagesInTopicById(topicId).
+                get(topicRepo.findIdOfMessage(topicId,mesId))
+                .getAuthor();
+        if (messageAuthor.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+            topicRepo.deleteMessage(topicId, mesId);
+        }
+        throw new UsernameNotFoundException("Пользователь с username = " +
+                SecurityContextHolder.getContext().getAuthentication().getName() +
+                " не имеет доступа к редактированию данного message!");
+    }
+
+    public void deleteTopic(int topicId) {
+        topicRepo.deleteTopic(topicId);
+    }
+
+    private boolean hasAdminRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Set<String> userRoles = new HashSet<>();
+
+        if (authentication != null) {
+            authentication.getAuthorities().forEach(authority -> {
+                userRoles.add(authority.getAuthority());
+            });
+        }
+
+        return userRoles.contains("ROLE_admin");
     }
 }

@@ -48,14 +48,18 @@ public class InMemoryTopicDB {
         topics.get(this.findIdOfTopic(topicId)).getMessages().remove(this.findIdOfMessage(mesId, topicId));
     }
 
-    private int findIdOfTopic(int id) {
+    public void deleteTopic(int topicId) {
+        topics.remove(findIdOfTopic(topicId));
+    }
+
+    public int findIdOfTopic(int id) {
         return IntStream.range(0, topics.size())
                 .filter(i -> topics.get(i).getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new IndexOutOfBoundsException("Топика с id = " + id + " не существует!"));
     }
 
-    private int findIdOfMessage(int id, int topicId) {
+    public int findIdOfMessage(int id, int topicId) {
         for (Topic topic : topics) {
             int index = IntStream.range(0, topic.getMessages().size())
                     .filter(j -> topic.getMessages().get(j).getId() == id && topic.getId() == topicId)

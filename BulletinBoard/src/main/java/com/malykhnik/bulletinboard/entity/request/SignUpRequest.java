@@ -16,4 +16,5 @@ import java.util.Date;
 public class SignUpRequest {
     private String username;
     private String password;
+    private String role;
 }

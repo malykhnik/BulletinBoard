@@ -49,4 +49,9 @@ public class TopicController {
                               @PathVariable int mesId) {
         topicService.deleteMessage(topicId, mesId);
     }
+
+    @DeleteMapping("/deleteTopic/{topicId}")
+    public void deleteTopic(@PathVariable int topicId) {
+        topicService.deleteTopic(topicId);
+    }
 }
