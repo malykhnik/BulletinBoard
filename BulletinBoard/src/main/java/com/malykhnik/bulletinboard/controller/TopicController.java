@@ -1,6 +1,7 @@
 package com.malykhnik.bulletinboard.controller;
 
 import com.malykhnik.bulletinboard.dto.MessageDto;
+import com.malykhnik.bulletinboard.dto.TopicDto;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
 import com.malykhnik.bulletinboard.exception.MessageNotFound;
@@ -48,6 +49,12 @@ public class TopicController {
         return topicService.updateMessage(messageDto, topicId, mesId);
     }
 
+    @PutMapping("/updateTopic/{topicId}")
+    public Topic updateTopic(@RequestBody TopicDto topicDto,
+                             @PathVariable int topicId) throws TopicNotFound {
+        return topicService.updateTopic(topicDto, topicId);
+    }
+
     @DeleteMapping("/deleteMessage/{topicId}/{mesId}")
     public Message deleteMessage(@PathVariable int topicId,
                               @PathVariable int mesId) throws UserNotAuthenticated, NoUserPermissions, TopicNotFound, MessageNotFound {
@@ -55,7 +62,7 @@ public class TopicController {
     }
 
     @DeleteMapping("/deleteTopic/{topicId}")
-    public void deleteTopic(@PathVariable int topicId) throws TopicNotFound {
-        topicService.deleteTopic(topicId);
+    public Topic deleteTopic(@PathVariable int topicId) throws TopicNotFound {
+        return topicService.deleteTopic(topicId);
     }
 }

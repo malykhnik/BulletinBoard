@@ -1,6 +1,7 @@
 package com.malykhnik.bulletinboard.repository;
 
 import com.malykhnik.bulletinboard.dto.MessageDto;
+import com.malykhnik.bulletinboard.dto.TopicDto;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
 import com.malykhnik.bulletinboard.exception.MessageNotFound;
@@ -44,12 +45,21 @@ public class InMemoryTopicDB {
         return topics.get(findIdOfTopic(topicId)).getMessages().set(findIdOfMessage(topicId, mesId), message);
     }
 
+    public Topic updateTopic(TopicDto topicDto, int topicId) throws TopicNotFound {
+        Topic topic = topics.get(findIdOfTopic(topicId));
+        if (topicDto.getTitle() != null) topic.setTitle(topicDto.getTitle());
+
+        return topics.set(findIdOfTopic(topicId), topic);
+    }
+
     public Message deleteMessage(int topicId, int mesId) throws TopicNotFound, MessageNotFound {
         return topics.get(this.findIdOfTopic(topicId)).getMessages().remove(this.findIdOfMessage(topicId, mesId));
     }
 
-    public void deleteTopic(int topicId) throws TopicNotFound {
+    public Topic deleteTopic(int topicId) throws TopicNotFound {
+        Topic returnedTopic = topics.get(findIdOfTopic(topicId));
         topics.remove(findIdOfTopic(topicId));
+        return returnedTopic;
     }
 
     public int findIdOfTopic(int id) throws TopicNotFound {

@@ -1,6 +1,7 @@
 package com.malykhnik.bulletinboard.service.Impl;
 
 import com.malykhnik.bulletinboard.dto.MessageDto;
+import com.malykhnik.bulletinboard.dto.TopicDto;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
 import com.malykhnik.bulletinboard.exception.MessageNotFound;
@@ -86,8 +87,13 @@ public class TopicServiceImpl implements TopicService {
                 " не имеет доступа к редактированию данного message!");
     }
 
-    public void deleteTopic(int topicId) throws TopicNotFound {
-        topicRepo.deleteTopic(topicId);
+    @Override
+    public Topic updateTopic(TopicDto topicDto, int topicId) throws TopicNotFound {
+        return topicRepo.updateTopic(topicDto, topicId);
+    }
+
+    public Topic deleteTopic(int topicId) throws TopicNotFound {
+        return topicRepo.deleteTopic(topicId);
     }
 
     private boolean hasAdminRole() throws UserNotAuthenticated {

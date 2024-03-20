@@ -1,6 +1,7 @@
 package com.malykhnik.bulletinboard.service;
 
 import com.malykhnik.bulletinboard.dto.MessageDto;
+import com.malykhnik.bulletinboard.dto.TopicDto;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
 import com.malykhnik.bulletinboard.exception.MessageNotFound;
@@ -22,5 +23,6 @@ public interface TopicService {
     Message updateMessage(MessageDto messageDto, int topicId, int mesId) throws UserNotAuthenticated, NoUserPermissions, TopicNotFound, MessageNotFound;
 
     Message deleteMessage(int topicId, int mesId) throws UserNotAuthenticated, NoUserPermissions, TopicNotFound, MessageNotFound;
-    void deleteTopic(int topicId) throws TopicNotFound;
+    Topic deleteTopic(int topicId) throws TopicNotFound;
+    Topic updateTopic(TopicDto topicDto, int topicId) throws TopicNotFound;
 }

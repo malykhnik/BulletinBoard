@@ -32,7 +32,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/bulletinBoard/**").authenticated()
-                        .requestMatchers("/api/bulletinBoard/deleteTopic/{id}").hasRole("admin")
+                        .requestMatchers("/api/bulletinBoard/deleteTopic/{topicId}").hasRole("admin")
+                        .requestMatchers("/api/bulletinBoard/updateTopic/{topicId}").hasRole("admin")
                         .requestMatchers("/api/bulletinBoard/updateMessage/{topicId}/{mesId}").hasAnyRole("admin","user")
                         .requestMatchers("/api/bulletinBoard/deleteMessage/{topicId}/{mesId}").hasAnyRole("admin","user")
                         .anyRequest().permitAll())
