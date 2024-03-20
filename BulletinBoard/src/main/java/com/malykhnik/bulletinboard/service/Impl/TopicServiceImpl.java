@@ -67,7 +67,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void deleteMessage(int topicId, int mesId) {
+    public Message deleteMessage(int topicId, int mesId) {
         if (hasAdminRole()) {
             topicRepo.deleteMessage(topicId, mesId);
         }
@@ -76,7 +76,7 @@ public class TopicServiceImpl implements TopicService {
                 get(topicRepo.findIdOfMessage(topicId,mesId))
                 .getAuthor();
         if (messageAuthor.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
-            topicRepo.deleteMessage(topicId, mesId);
+            return topicRepo.deleteMessage(topicId, mesId);
         }
         throw new UsernameNotFoundException("Пользователь с username = " +
                 SecurityContextHolder.getContext().getAuthentication().getName() +

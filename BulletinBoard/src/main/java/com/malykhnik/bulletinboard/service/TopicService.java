@@ -17,6 +17,6 @@ public interface TopicService {
 
     Message updateMessage(MessageDto messageDto, int topicId, int mesId);
 
-    void deleteMessage(int topicId, int mesId);
+    Message deleteMessage(int topicId, int mesId);
     void deleteTopic(int topicId);
 }

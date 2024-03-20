@@ -45,9 +45,9 @@ public class TopicController {
     }
 
     @DeleteMapping("/deleteMessage/{topicId}/{mesId}")
-    public void deleteMessage(@PathVariable int topicId,
+    public Message deleteMessage(@PathVariable int topicId,
                               @PathVariable int mesId) {
-        topicService.deleteMessage(topicId, mesId);
+        return topicService.deleteMessage(topicId, mesId);
     }
 
     @DeleteMapping("/deleteTopic/{topicId}")

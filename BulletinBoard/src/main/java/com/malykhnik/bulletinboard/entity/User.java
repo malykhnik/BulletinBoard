@@ -3,6 +3,7 @@ package com.malykhnik.bulletinboard.entity;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,12 +16,13 @@ import java.util.Collections;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User implements UserDetails {
     @NotNull(message = "Пользователь должен иметь имя")
     @Size(min = 1)
     private String username;
     @NotNull(message = "Пользователь должен иметь пароль")
-    @Size(min = 3,message = "Минимальная длина пароля 3 символа")
+    @Size(min = 5,message = "Минимальная длина пароля 3 символа")
     private String password;
     @NotNull(message = "Пользователь должен обладать ролью admin или user")
     private String role;

@@ -27,12 +27,12 @@ public class SecurityConfig {
     private final UserService userService;
 
 
-    //НАСТРОИТЬ РОЛИ!!!!!!!!!!!!!!!!!!!!!!!! АДМИН НЕ РАБОТАЕТ!!!!!!!!!!!!!
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/bulletinBoard/deleteTopic/").hasRole("admin")
+                        .requestMatchers("/api/bulletinBoard/deleteTopic/{id}").hasRole("admin")
+                        .requestMatchers("/api/bulletinBoard/**").authenticated()
                         .anyRequest().permitAll())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

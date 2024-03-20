@@ -4,6 +4,7 @@ import com.malykhnik.bulletinboard.dto.MessageDto;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
 import lombok.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -34,18 +35,15 @@ public class InMemoryTopicDB {
     }
 
     public Message updateMessage(MessageDto messageDto, int topicId, int mesId) {
-        Message message = topics.get(findIdOfTopic(topicId)).getMessages().get(findIdOfMessage(mesId, topicId));
+        Message message = topics.get(findIdOfTopic(topicId)).getMessages().get(findIdOfMessage(topicId, mesId));
         if (!message.getMessage().equals(messageDto.getMessage())) {
             message.setMessage(messageDto.getMessage());
         }
-        if (!message.getAuthor().equals(messageDto.getAuthor())) {
-            message.setAuthor(messageDto.getAuthor());
-        }
-        return topics.get(findIdOfTopic(topicId)).getMessages().set(findIdOfMessage(mesId, topicId), message);
+        return topics.get(findIdOfTopic(topicId)).getMessages().set(findIdOfMessage(topicId, mesId), message);
     }
 
-    public void deleteMessage(int topicId, int mesId) {
-        topics.get(this.findIdOfTopic(topicId)).getMessages().remove(this.findIdOfMessage(mesId, topicId));
+    public Message deleteMessage(int topicId, int mesId) {
+        return topics.get(this.findIdOfTopic(topicId)).getMessages().remove(this.findIdOfMessage(topicId, mesId));
     }
 
     public void deleteTopic(int topicId) {
@@ -59,16 +57,16 @@ public class InMemoryTopicDB {
                 .orElseThrow(() -> new IndexOutOfBoundsException("Топика с id = " + id + " не существует!"));
     }
 
-    public int findIdOfMessage(int id, int topicId) {
+    public int findIdOfMessage(int topicId, int mesId) {
         for (Topic topic : topics) {
             int index = IntStream.range(0, topic.getMessages().size())
-                    .filter(j -> topic.getMessages().get(j).getId() == id && topic.getId() == topicId)
+                    .filter(j -> topic.getMessages().get(j).getId() == mesId && topic.getId() == topicId)
                     .findFirst()
                     .orElse(-1);
             if (index != -1) {
                 return index;
             }
         }
-        throw new IndexOutOfBoundsException("Сообщения с id = " + id + " в топике с id = " + topicId + " не существует!");
+        throw new IndexOutOfBoundsException("Сообщения с id = " + mesId + " в топике с id = " + topicId + " не существует!");
     }
 }

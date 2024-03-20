@@ -3,19 +3,25 @@ package com.malykhnik.bulletinboard.initialization;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
 import com.malykhnik.bulletinboard.repository.InMemoryTopicDB;
+import com.malykhnik.bulletinboard.repository.InMemoryUserDB;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 @Component
 @AllArgsConstructor
 public class InMemoryDBInitializer implements ApplicationRunner {
     private final InMemoryTopicDB repo;
+    private final InMemoryUserDB userRepo;
     @Override
     public void run(ApplicationArguments args) {
         List<Topic> init = new ArrayList<>();
@@ -23,7 +29,9 @@ public class InMemoryDBInitializer implements ApplicationRunner {
         // Topic 1
         List<Message> topic1Messages = new ArrayList<>();
         topic1Messages.add(new Message(1, "John", "Hello, everyone!", Calendar.getInstance().getTime()));
+        userRepo.save(new User("John",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         topic1Messages.add(new Message(2, "Alice", "Welcome to our community!", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Alice",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         for (int i = 0; i < topic1Messages.size(); i++) topic1Messages.get(i).setId(i+1);
         Topic topic1 = new Topic(1, "Introduction", topic1Messages);
         topic1.setId(nextId += 1);
@@ -32,7 +40,9 @@ public class InMemoryDBInitializer implements ApplicationRunner {
         // Topic 2
         List<Message> topic2Messages = new ArrayList<>();
         topic2Messages.add(new Message(1, "Bob", "New feature announcement!", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Bob",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         topic2Messages.add(new Message(2, "Sarah", "Looking for feedback", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Sarah",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         for (int i = 0; i < topic2Messages.size(); i++) topic2Messages.get(i).setId(i+1);
         Topic topic2 = new Topic(2, "Product Updates", topic2Messages);
         topic2.setId(nextId += 1);
@@ -41,6 +51,7 @@ public class InMemoryDBInitializer implements ApplicationRunner {
         // Topic 3
         List<Message> topic3Messages = new ArrayList<>();
         topic3Messages.add(new Message(1, "Mark", "Important notice regarding security", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Mark",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         for (int i = 0; i < topic3Messages.size(); i++) topic3Messages.get(i).setId(i+1);
         Topic topic3 = new Topic(3, "Security Alert", topic3Messages);
         topic3.setId(nextId += 1);
@@ -49,8 +60,11 @@ public class InMemoryDBInitializer implements ApplicationRunner {
         // Topic 4
         List<Message> topic4Messages = new ArrayList<>();
         topic4Messages.add(new Message(1, "Emily", "Event announcement: Save the date!", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Emily",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         topic4Messages.add(new Message(2, "Jake", "Event details and RSVP", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Jake",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         topic4Messages.add(new Message(3, "Olivia", "Agenda for the event", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Olivia",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         for (int i = 0; i < topic4Messages.size(); i++) topic4Messages.get(i).setId(i+1);
         Topic topic4 = new Topic(4, "Upcoming Event", topic4Messages);
         topic4.setId(nextId += 1);
@@ -59,7 +73,9 @@ public class InMemoryDBInitializer implements ApplicationRunner {
         // Topic 5
         List<Message> topic5Messages = new ArrayList<>();
         topic5Messages.add(new Message(1, "Tom", "Project update: Milestone achieved", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Tom",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         topic5Messages.add(new Message(2, "Linda", "Next steps and action items", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Linda",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         for (int i = 0; i < topic5Messages.size(); i++) topic5Messages.get(i).setId(i+1);
         Topic topic5 = new Topic(5, "Project Progress", topic5Messages);
         topic5.setId(nextId += 1);
@@ -68,9 +84,13 @@ public class InMemoryDBInitializer implements ApplicationRunner {
         // Topic 6
         List<Message> topic6Messages = new ArrayList<>();
         topic6Messages.add(new Message(1, "Chris", "Feedback requested on new feature", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Chris",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         topic6Messages.add(new Message(2, "Sophia", "Bug report: Issue found in module", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Sophia",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         topic6Messages.add(new Message(3, "Aiden", "Feature enhancement suggestions", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Aiden",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         topic6Messages.add(new Message(4, "Emma", "Question about functionality", Calendar.getInstance().getTime()));
+        userRepo.save(new User("Emma",new BCryptPasswordEncoder().encode("12345"), Collections.singleton(new SimpleGrantedAuthority("ROLE_user"))));
         for (int i = 0; i < topic6Messages.size(); i++) topic6Messages.get(i).setId(i+1);
         Topic topic6 = new Topic(6, "Feature Feedback", topic6Messages);
         topic6.setId(nextId += 1);

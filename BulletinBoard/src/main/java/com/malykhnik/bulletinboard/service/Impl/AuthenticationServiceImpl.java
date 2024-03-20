@@ -26,17 +26,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtAuthenticationResponse signup(SignUpRequest request) {
-        var user = User.builder()
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .build();
-
-        if (userRepository.findByUsername(request.getUsername()) == null) {
-            userRepository.save((User) user);
+        if (userRepository.findByUsername(request.getUsername()) != null) {
+            var user = User.builder()
+                    .username(userRepository.findByUsername(request.getUsername()).getUsername())
+                    .password(passwordEncoder.encode(userRepository.findByUsername(request.getUsername()).getPassword()))
+                    .roles(String.valueOf(userRepository.findByUsername(request.getUsername()).getAuthorities()))
+                    .build();
+            if (userRepository.findByUsername(request.getUsername()) == null) {
+                userRepository.save((User) user);
+            }
+            var jwt = jwtService.generateToken(user);
+            return JwtAuthenticationResponse.builder().token(jwt).build();
         }
-
-        var jwt = jwtService.generateToken(user);
-        return JwtAuthenticationResponse.builder().token(jwt).build();
+        else {
+            var user = User.builder()
+                    .username(request.getUsername())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .roles(request.getRole())
+                    .build();
+            if (userRepository.findByUsername(request.getUsername()) == null) {
+                userRepository.save((User) user);
+            }
+            var jwt = jwtService.generateToken(user);
+            return JwtAuthenticationResponse.builder().token(jwt).build();
+        }
     }
 
     @Override
