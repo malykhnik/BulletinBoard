@@ -4,6 +4,7 @@ package com.malykhnik.bulletinboard.service.Impl;
 import com.malykhnik.bulletinboard.entity.request.SignInRequest;
 import com.malykhnik.bulletinboard.entity.request.SignUpRequest;
 import com.malykhnik.bulletinboard.entity.response.JwtAuthenticationResponse;
+import com.malykhnik.bulletinboard.exception.UserAlreadyExistsException;
 import com.malykhnik.bulletinboard.repository.InMemoryUserDB;
 import com.malykhnik.bulletinboard.service.AuthenticationService;
 import com.malykhnik.bulletinboard.service.JwtService;
@@ -25,31 +26,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public JwtAuthenticationResponse signup(SignUpRequest request) {
+    public JwtAuthenticationResponse signup(SignUpRequest request) throws UserAlreadyExistsException {
         if (userRepository.findByUsername(request.getUsername()) != null) {
-            var user = User.builder()
-                    .username(userRepository.findByUsername(request.getUsername()).getUsername())
-                    .password(passwordEncoder.encode(userRepository.findByUsername(request.getUsername()).getPassword()))
-                    .roles(String.valueOf(userRepository.findByUsername(request.getUsername()).getAuthorities()))
-                    .build();
-            if (userRepository.findByUsername(request.getUsername()) == null) {
-                userRepository.save((User) user);
-            }
-            var jwt = jwtService.generateToken(user);
-            return JwtAuthenticationResponse.builder().token(jwt).build();
+            throw new UserAlreadyExistsException("Пользователь уже зарегистрирован! Достаточно провести аутентификацию пользователя!");
         }
-        else {
-            var user = User.builder()
-                    .username(request.getUsername())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .roles(request.getRole())
-                    .build();
-            if (userRepository.findByUsername(request.getUsername()) == null) {
-                userRepository.save((User) user);
-            }
-            var jwt = jwtService.generateToken(user);
-            return JwtAuthenticationResponse.builder().token(jwt).build();
+        var user = User.builder()
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .roles(request.getRole())
+                .build();
+        if (userRepository.findByUsername(request.getUsername()) == null) {
+            userRepository.save((User) user);
         }
+        var jwt = jwtService.generateToken(user);
+        return JwtAuthenticationResponse.builder().token(jwt).build();
+
     }
 
     @Override

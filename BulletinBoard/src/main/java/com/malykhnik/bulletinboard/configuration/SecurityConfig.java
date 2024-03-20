@@ -31,8 +31,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/bulletinBoard/deleteTopic/{id}").hasRole("admin")
                         .requestMatchers("/api/bulletinBoard/**").authenticated()
+                        .requestMatchers("/api/bulletinBoard/deleteTopic/{id}").hasRole("admin")
+                        .requestMatchers("/api/bulletinBoard/updateMessage/{topicId}/{mesId}").hasAnyRole("admin","user")
+                        .requestMatchers("/api/bulletinBoard/deleteMessage/{topicId}/{mesId}").hasAnyRole("admin","user")
                         .anyRequest().permitAll())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

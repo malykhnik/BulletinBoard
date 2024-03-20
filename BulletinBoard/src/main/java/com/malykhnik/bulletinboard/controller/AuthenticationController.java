@@ -4,6 +4,7 @@ package com.malykhnik.bulletinboard.controller;
 import com.malykhnik.bulletinboard.entity.request.SignInRequest;
 import com.malykhnik.bulletinboard.entity.request.SignUpRequest;
 import com.malykhnik.bulletinboard.entity.response.JwtAuthenticationResponse;
+import com.malykhnik.bulletinboard.exception.UserAlreadyExistsException;
 import com.malykhnik.bulletinboard.service.AuthenticationService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest request) {
+    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest request) throws UserAlreadyExistsException {
         logger.info("returned refresh token!");
         return ResponseEntity.ok(authenticationService.signup(request));
     }
