@@ -1,0 +1,322 @@
+{
+	"info": {
+		"_postman_id": "9cb7e95f-118a-4da5-9bb9-30319545ff2c",
+		"name": "BulletinBoard",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32954070"
+	},
+	"item": [
+		{
+			"name": "Все топики",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJOaWtpdGEiLCJpYXQiOjE3MTEwMTg5MzgsImV4cCI6MTcxMTAyMDM3OH0.jhZOeh3jIsEpubMkgPgqueFYhS5UrS342Zvm8jhj06I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/bulletinBoard/getAllTopics?page=1&pageSize=100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bulletinBoard",
+						"getAllTopics"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Сообщения из топика",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/bulletinBoard/getMessagesInTopic/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bulletinBoard",
+						"getMessagesInTopic",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать топик",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":100,\r\n    \"title\": \"Cleaning\",\r\n    \"messages\": [\r\n        {\r\n            \"author\": \"Nikita\",\r\n            \"message\": \"Завтра в 17-00\",\r\n            \"date\": \"2024-03-18\"\r\n        },\r\n        {\r\n            \"author\": \"Alex\",\r\n            \"message\": \"К врачу\",\r\n            \"date\": \"2024-03-18\"\r\n        }\r\n    ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/bulletinBoard/createTopic",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bulletinBoard",
+						"createTopic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать message в топике",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"author\": \"{{$randomFirstName}}\",\r\n    \"message\": \"К врачу\",\r\n    \"date\": \"2024-03-18\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/bulletinBoard/createMessageInTopic/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bulletinBoard",
+						"createMessageInTopic",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Изменить message",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"author\": \"{{$randomFirstName}}\",\r\n    \"message\": \"К врачу\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/bulletinBoard/updateMessage/2/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bulletinBoard",
+						"updateMessage",
+						"2",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удалить message",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/bulletinBoard/deleteMessage/1/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bulletinBoard",
+						"deleteMessage",
+						"1",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signUp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Nikita\",\r\n    \"password\": \"12345\",\r\n    \"role\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signIn",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Nikita\",\r\n    \"password\": \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удалить topic",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/bulletinBoard/deleteTopic/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bulletinBoard",
+						"deleteTopic",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Изменить topic",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJOaWtpdGEiLCJpYXQiOjE3MTA5NjcwOTYsImV4cCI6MTcxMDk2ODUzNn0.7N3z_rlmtRQvbsXNelXOjj-0WRfTy4yAua6ZMMchT4A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"messages\":[\r\n        {\r\n            \"message\": \"AAAAAAAAAAAAAAAAAAAAAAAAAA\"\r\n        }\r\n    ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/bulletinBoard/updateTopic/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bulletinBoard",
+						"updateTopic",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
