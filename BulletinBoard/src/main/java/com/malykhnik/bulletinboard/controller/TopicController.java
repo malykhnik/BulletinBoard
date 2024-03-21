@@ -4,10 +4,7 @@ import com.malykhnik.bulletinboard.dto.MessageDto;
 import com.malykhnik.bulletinboard.dto.TopicDto;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
-import com.malykhnik.bulletinboard.exception.MessageNotFound;
-import com.malykhnik.bulletinboard.exception.NoUserPermissions;
-import com.malykhnik.bulletinboard.exception.TopicNotFound;
-import com.malykhnik.bulletinboard.exception.UserNotAuthenticated;
+import com.malykhnik.bulletinboard.exception.*;
 import com.malykhnik.bulletinboard.service.TopicService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -22,13 +19,16 @@ public class TopicController {
     private final TopicService topicService;
 
     @GetMapping("/getAllTopics")
-    public List<Topic> getAllTopics() {
-        return topicService.getAllTopics();
+    public List<Topic> getAllTopics(@RequestParam(defaultValue = "1") int page,
+                                    @RequestParam(defaultValue = "3") int pageSize) throws IllegalPageSizeException {
+        return topicService.getAllTopics(page, pageSize);
     }
 
     @GetMapping("/getMessagesInTopic/{id}")
-    public List<Message> getMessageInTopicById(@PathVariable int id) throws TopicNotFound {
-        return topicService.getMessagesInTopicById(id);
+    public List<Message> getMessageInTopicById(@PathVariable int id,
+                                               @RequestParam(defaultValue = "1") int page,
+                                               @RequestParam(defaultValue = "3") int pageSize) throws TopicNotFound, IllegalPageSizeException {
+        return topicService.getMessagesInTopicById(id, page, pageSize);
     }
 
     @PostMapping("/createTopic")

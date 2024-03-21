@@ -4,17 +4,14 @@ import com.malykhnik.bulletinboard.dto.MessageDto;
 import com.malykhnik.bulletinboard.dto.TopicDto;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
-import com.malykhnik.bulletinboard.exception.MessageNotFound;
-import com.malykhnik.bulletinboard.exception.NoUserPermissions;
-import com.malykhnik.bulletinboard.exception.TopicNotFound;
-import com.malykhnik.bulletinboard.exception.UserNotAuthenticated;
+import com.malykhnik.bulletinboard.exception.*;
 
 import java.util.List;
 
 public interface TopicService {
-    List<Topic> getAllTopics();
+    List<Topic> getAllTopics(int page, int pageSize) throws IllegalPageSizeException;
 
-    List<Message> getMessagesInTopicById(int id) throws TopicNotFound;
+    List<Message> getMessagesInTopicById(int id, int page, int pageSize) throws TopicNotFound, IllegalPageSizeException;
 
     void addTopic(Topic topic);
 

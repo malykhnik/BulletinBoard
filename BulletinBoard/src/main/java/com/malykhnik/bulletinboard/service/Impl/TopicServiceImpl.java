@@ -4,10 +4,7 @@ import com.malykhnik.bulletinboard.dto.MessageDto;
 import com.malykhnik.bulletinboard.dto.TopicDto;
 import com.malykhnik.bulletinboard.entity.Message;
 import com.malykhnik.bulletinboard.entity.Topic;
-import com.malykhnik.bulletinboard.exception.MessageNotFound;
-import com.malykhnik.bulletinboard.exception.NoUserPermissions;
-import com.malykhnik.bulletinboard.exception.TopicNotFound;
-import com.malykhnik.bulletinboard.exception.UserNotAuthenticated;
+import com.malykhnik.bulletinboard.exception.*;
 import com.malykhnik.bulletinboard.repository.InMemoryTopicDB;
 import com.malykhnik.bulletinboard.service.TopicService;
 import lombok.AllArgsConstructor;
@@ -15,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,13 +24,41 @@ public class TopicServiceImpl implements TopicService {
     private final InMemoryTopicDB topicRepo;
 
     @Override
-    public List<Topic> getAllTopics() {
-        return topicRepo.getAllTopics();
+    public List<Topic> getAllTopics(int page, int pageSize) throws IllegalPageSizeException {
+        List<Topic> allTopics = topicRepo.getAllTopics();
+
+        if (page < 0 || pageSize < 0) {
+            throw new IllegalPageSizeException("Номер страницы и количество записей в странице не может быть меньше 1!");
+        }
+
+        if (pageSize > 10) {
+            pageSize = 10;
+        }
+        page -= 1;
+
+        int beginIdOfPage = page * pageSize;
+        int endIdOfPage = Math.min(beginIdOfPage + pageSize, allTopics.size());
+
+        return allTopics.subList(beginIdOfPage, endIdOfPage);
     }
 
     @Override
-    public List<Message> getMessagesInTopicById(int id) throws TopicNotFound {
-        return topicRepo.getMessagesInTopicById(id);
+    public List<Message> getMessagesInTopicById(int id, int page, int pageSize) throws TopicNotFound, IllegalPageSizeException {
+        List<Message> allMessages = topicRepo.getMessagesInTopicById(id);
+
+        if (page < 1 || pageSize < 1) {
+            throw new IllegalPageSizeException("Номер страницы и количество записей в странице не может быть меньше 1!");
+        }
+
+        if (pageSize > 10) {
+            pageSize = 10;
+        }
+        page -= 1;
+
+        int beginIdOfPage = page * pageSize;
+        int endIdOfPage = Math.min(beginIdOfPage + pageSize, allMessages.size());
+
+        return allMessages.subList(beginIdOfPage, endIdOfPage);
     }
 
     @Override
@@ -110,4 +136,5 @@ public class TopicServiceImpl implements TopicService {
 
         return userRoles.contains("ROLE_admin");
     }
+
 }
