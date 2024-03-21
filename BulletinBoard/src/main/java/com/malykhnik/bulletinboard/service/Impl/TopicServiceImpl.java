@@ -27,7 +27,7 @@ public class TopicServiceImpl implements TopicService {
     public List<Topic> getAllTopics(int page, int pageSize) throws IllegalPageSizeException {
         List<Topic> allTopics = topicRepo.getAllTopics();
 
-        if (page < 0 || pageSize < 0) {
+        if (page < 1 || pageSize < 1) {
             throw new IllegalPageSizeException("Номер страницы и количество записей в странице не может быть меньше 1!");
         }
 
